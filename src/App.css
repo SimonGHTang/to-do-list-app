@@ -1,33 +1,63 @@
 div {
 	display: flex;
 	flex-direction: row;
-	justify-content: space-evenly;
-	align-items: center;
+	justify-content: space-between;
+	align-items: flex-start;
 }
 
 #root {
-  max-width: 60vw;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+	width: 50vw;
+	min-width: 720px;
+	height:inherit;
+	margin: 0 auto;
+	text-align: center;
 }
 
 .list-container {
 	flex-direction: column;
+	justify-content: space-evenly;
 	align-items: stretch;
+	border: solid;
+	border-width: 1px;
+	border-color: white;
+}
+
+.task-row {
+	height: fit-content;
+	border-top: solid;
+	border-top-width: 1px;
+	border-top-color: white;
 }
 
 .task-row > * {
+	margin: 0.5em; 
+}
+
+div [class^="desc"] {
 	margin: 0.5em;
+	align-items: ;
+	width: 65%;
+}
+
+div [class^="desc"] > span, div [class^="desc"] > input {
+	font-size: 1em;
+	padding: 0px;
+	/* padding-right: 0.5em; */
+	border-width: 0px;
+	width: inherit - 60px;
+}
+
+.input {
 	font-size: 1.5em;
 }
 
 .icon {
-	width:30px;
-	margin-left: 0.5em;
+	width: 30px;
+	height: 30px;
 }
 
 .plus-icon {
-	width:50px;
+	height: 50px;
+	width: 50px;
 	margin: 2em;
 }

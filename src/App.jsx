@@ -10,7 +10,7 @@ function App() {
 
 	function emptyTask() {
 		return {
-			id: crypto.randomUUID(),
+			key: crypto.randomUUID(),
 			order: 1,
 			completed: false,
 			desc: "New Task",
@@ -21,19 +21,18 @@ function App() {
 		setTaskList((prevState) => [...prevState.slice(0, prevState.length), emptyTask()]);
 	}
 
-	const handleEdit = (id) => {
+	const handleChanges = (newTask) => {
 		let tempArray = taskList.toSpliced(taskList.length);
-		let taskIndex = tempArray.findIndex((task) => task.id === id);
+		let taskIndex = tempArray.findIndex((task) => task.key === newTask.key);
 		if (taskIndex !== -1) {
-			tempArray.splice(taskIndex, 1);
+			tempArray[taskIndex] = newTask;
 		}
 		setTaskList(tempArray);
+	};
 
-	}
-
-	const handleDelete = (id) => {
+	const handleDelete = (key) => {
 		let tempArray = taskList.toSpliced(taskList.length);
-		let taskIndex = tempArray.findIndex((task) => task.id === id);
+		let taskIndex = tempArray.findIndex((task) => task.key === key);
 		if (taskIndex !== -1) {
 			tempArray.splice(taskIndex, 1);
 		}
@@ -48,13 +47,15 @@ function App() {
 				{taskList.map((task) => (
 					<TaskRow
 						task={task}
-						handleEdit={handleEdit}
+						handleChanges={handleChanges}
 						handleDelete={handleDelete}
-						key={task.id}
+						key={task.key}
 					/>
 				))}
 			</span>
-			<img className="plus-icon" onClick={newTask} src={plusIcon} />
+			<div>
+				<img className="plus-icon" onClick={newTask} src={plusIcon} />
+			</div>
 		</div>
 	);
 }

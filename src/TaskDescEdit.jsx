@@ -1,12 +1,21 @@
-import saveIcon from './assets/save.png'
+import { useState } from "react";
+import saveIcon from "./assets/save.png";
 
-const TaskDescEdit = ({desc}) => {
+const TaskDescEdit = ({ saveDesc, desc }) => {
+	const [descInput, setDescInput] = useState(desc)
+
 	return (
 		<div className="desc-display">
-			<span>{desc}</span>
-			<img className='icon' src={saveIcon}/>
+			<input
+				autoFocus
+				defaultValue={descInput}
+				onChange={(e) => setDescInput(e.target.value)}
+				onKeyDown={(e) => e.key === 'Enter' ? saveDesc(descInput): {}}
+				// onBlur={(e) => saveDesc(descInput)}
+			/>
+			<img className="icon" onClick={() => saveDesc(descInput)} src={saveIcon} />
 		</div>
-	)
-}
+	);
+};
 
 export default TaskDescEdit;
