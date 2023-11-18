@@ -30,7 +30,7 @@ div {
 }
 
 .task-row > * {
-	margin: 0.5em; 
+	margin: 0.5em;
 }
 
 div [class^="desc"] {
