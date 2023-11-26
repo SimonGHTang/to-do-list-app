@@ -10,44 +10,78 @@ function App() {
 
   const [taskList, setTaskList] = useState(initialTaskList);
 
-  function emptyTask() {
-    return {
-      key: crypto.randomUUID(),
-      order: 1,
-      completed: false,
-      desc: "New Task",
-    };
+  const updateLocalStorage = (updatedTaskList) => {
+    localStorage.setItem("taskList", JSON.stringify(updatedTaskList))
   }
 
-  function handleNewTaskClick() {
-    setTaskList((prevState) => [...prevState.slice(0, prevState.length), emptyTask()]);
+  function handleAddNewTask() {
+    console.log('handleAddNewTask');
+
+    const updatedTaskList = [
+      ...taskList,
+      {
+        key: crypto.randomUUID(),
+        order: 1,
+        completed: false,
+        description: "New Task",
+      }
+    ]
+
+    setTaskList(updatedTaskList)
+    updateLocalStorage(updatedTaskList);
   }
 
-  const handleChanges = (newTask) => {
-    let tempArray = taskList.toSpliced(taskList.length);
-    let taskIndex = tempArray.findIndex((task) => task.key === newTask.key);
-    if (taskIndex !== -1) {
-      tempArray[taskIndex] = newTask;
-    }
-    setTaskList(tempArray);
+  const handleTaskCompleteChange = (taskId) => {
+    console.log('handleTaskCompleteChange');
+
+    const updatedTaskList = taskList.map((task) => {
+      if (task.key !== taskId) return task;
+
+      return {
+        ...task,
+        completed: !task.completed,
+      }
+    })
+
+    setTaskList(updatedTaskList);
+    updateLocalStorage(updatedTaskList);
+  }
+
+  const handleTaskDescriptionChange = (taskId, updatedDescription) => {
+    console.log('handleTaskDescriptionChange');
+
+    const updatedTaskList = taskList.map((task) => {
+      if (task.key !== taskId) return task;
+
+      return {
+        ...task,
+        description: updatedDescription,
+      }
+    })
+
+    setTaskList(updatedTaskList);
+    updateLocalStorage(updatedTaskList);
   };
 
-  const handleDelete = (key) => {
-    let tempArray = taskList.toSpliced(taskList.length);
-    let taskIndex = tempArray.findIndex((task) => task.key === key);
-    if (taskIndex !== -1) {
-      tempArray.splice(taskIndex, 1);
-    }
-    setTaskList(tempArray);
+  const handleDeleteTask = (taskId) => {
+    console.log('handleDelete', taskId)
+    const updatedTaskList = taskList.filter(({ key }) => taskId !== key);
+
+    setTaskList(updatedTaskList);
+    updateLocalStorage(updatedTaskList);
   };
 
   return (
     <MainLayout>
       <Container>
         <TodoHeader title="Task List" />
-        {localStorage.setItem("taskList", JSON.stringify(taskList))}
-        <TaskItemList taskList={taskList} handleChanges={handleChanges} handleDelete={handleDelete}/>
-        <TodoFooter handleNewTaskClick={handleNewTaskClick} />
+        <TaskItemList
+          taskList={taskList}
+          onTaskCompleteChange={handleTaskCompleteChange}
+          onTaskDescriptionChange={handleTaskDescriptionChange}
+          onTaskDelete={handleDeleteTask}
+        />
+        <TodoFooter onAddNewTask={handleAddNewTask} />
       </Container>
     </MainLayout>
   );

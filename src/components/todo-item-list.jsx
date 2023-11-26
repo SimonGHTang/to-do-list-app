@@ -1,16 +1,15 @@
 import TaskRow from "../TaskRow.jsx";
 
-const TodoItemList = ({ taskList, handleChanges, handleDelete }) => (
-  <span>
+const TodoItemList = ({ taskList, ...rest }) => (
+  <div>
     {taskList.map((task) => (
       <TaskRow
-        task={task}
-        handleChanges={handleChanges}
-        handleDelete={handleDelete}
         key={task.key}
+        task={task}
+        {...rest}
       />
     ))}
-  </span>
+  </div>
 )
 
 export default TodoItemList;

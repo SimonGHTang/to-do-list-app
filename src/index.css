@@ -83,28 +83,11 @@ body {
 }
 
 .task-row {
-  height: fit-content;
-  border-top: solid;
-  border-top-width: 1px;
-  border-top-color: white;
+  display: flex;
 }
 
 .task-row > * {
   margin: 0.5em;
-}
-
-div [class^="desc"] {
-  margin: 0.5em;
-  align-items: ;
-  width: 65%;
-}
-
-div [class^="desc"] > span, div [class^="desc"] > input {
-  font-size: 1em;
-  padding: 0px;
-  /* padding-right: 0.5em; */
-  border-width: 0px;
-  width: inherit - 60px;
 }
 
 .input {
