@@ -36,6 +36,7 @@ module.exports = {
         "react/prop-types": "off",
 
         // STYLING RULES
-        "arrow-body-style": ["error", "as-needed"]
+        "arrow-body-style": ["error", "as-needed"],
+        "indent": ["error", 2]
     }
 }

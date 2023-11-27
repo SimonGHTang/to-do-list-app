@@ -1,63 +1,90 @@
 import { useState } from "react";
-import TaskRow from "./TaskRow.jsx";
-import "./App.css";
-import plusIcon from "./assets/plus.png";
+import MainLayout from "./layouts/main-layout.jsx";
+import Container from "./components/container.jsx";
+import TaskItemList from "./components/todo-item-list.jsx";
+import TodoHeader from "./components/todo-header.jsx";
+import TodoFooter from "./components/todo-footer.jsx";
 
 function App() {
-	const initialTaskList = JSON.parse(localStorage.getItem("taskList")) || [];
+  const initialTaskList = JSON.parse(localStorage.getItem("taskList")) || [];
 
-	const [taskList, setTaskList] = useState(initialTaskList);
+  const [taskList, setTaskList] = useState(initialTaskList);
 
-	function emptyTask() {
-		return {
-			key: crypto.randomUUID(),
-			order: 1,
-			completed: false,
-			desc: "New Task",
-		};
-	}
+  const updateLocalStorage = (updatedTaskList) => {
+    localStorage.setItem("taskList", JSON.stringify(updatedTaskList))
+  }
 
-	function newTask() {
-		setTaskList((prevState) => [...prevState.slice(0, prevState.length), emptyTask()]);
-	}
+  function handleAddNewTask() {
+    console.log('handleAddNewTask');
 
-	const handleChanges = (newTask) => {
-		let tempArray = taskList.toSpliced(taskList.length);
-		let taskIndex = tempArray.findIndex((task) => task.key === newTask.key);
-		if (taskIndex !== -1) {
-			tempArray[taskIndex] = newTask;
-		}
-		setTaskList(tempArray);
-	};
+    const updatedTaskList = [
+      ...taskList,
+      {
+        key: crypto.randomUUID(),
+        order: 1,
+        completed: false,
+        description: "New Task",
+      }
+    ]
 
-	const handleDelete = (key) => {
-		let tempArray = taskList.toSpliced(taskList.length);
-		let taskIndex = tempArray.findIndex((task) => task.key === key);
-		if (taskIndex !== -1) {
-			tempArray.splice(taskIndex, 1);
-		}
-		setTaskList(tempArray);
-	};
+    setTaskList(updatedTaskList)
+    updateLocalStorage(updatedTaskList);
+  }
 
-	return (
-		<div className="list-container">
-			<h1>Task List</h1>
-			{localStorage.setItem("taskList", JSON.stringify(taskList))}
-			<span>
-				{taskList.map((task) => (
-					<TaskRow
-						task={task}
-						handleChanges={handleChanges}
-						handleDelete={handleDelete}
-						key={task.key}
-					/>
-				))}
-			</span>
-			<div>
-				<img className="plus-icon" onClick={newTask} src={plusIcon} />
-			</div>
-		</div>
-	);
+  const handleTaskCompleteChange = (taskId) => {
+    console.log('handleTaskCompleteChange');
+
+    const updatedTaskList = taskList.map((task) => {
+      if (task.key !== taskId) return task;
+
+      return {
+        ...task,
+        completed: !task.completed,
+      }
+    })
+
+    setTaskList(updatedTaskList);
+    updateLocalStorage(updatedTaskList);
+  }
+
+  const handleTaskDescriptionChange = (taskId, updatedDescription) => {
+    console.log('handleTaskDescriptionChange');
+
+    const updatedTaskList = taskList.map((task) => {
+      if (task.key !== taskId) return task;
+
+      return {
+        ...task,
+        description: updatedDescription,
+      }
+    })
+
+    setTaskList(updatedTaskList);
+    updateLocalStorage(updatedTaskList);
+  };
+
+  const handleDeleteTask = (taskId) => {
+    console.log('handleDelete', taskId)
+    const updatedTaskList = taskList.filter(({ key }) => taskId !== key);
+
+    setTaskList(updatedTaskList);
+    updateLocalStorage(updatedTaskList);
+  };
+
+  return (
+    <MainLayout>
+      <Container>
+        <TodoHeader title="Task List" />
+        <TaskItemList
+          taskList={taskList}
+          onTaskCompleteChange={handleTaskCompleteChange}
+          onTaskDescriptionChange={handleTaskDescriptionChange}
+          onTaskDelete={handleDeleteTask}
+        />
+        <TodoFooter onAddNewTask={handleAddNewTask} />
+      </Container>
+    </MainLayout>
+  );
 }
 
 export default App;
