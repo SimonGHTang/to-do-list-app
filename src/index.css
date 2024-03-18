@@ -29,13 +29,14 @@ h1 {
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
+	margin: 0px;
+  border-radius: 0px;
+  border: 0px;
+  padding: 0;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: inherit;
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -45,6 +46,10 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+img {
+	margin: 0px;
 }
 
 @media (prefers-color-scheme: light) {
@@ -73,6 +78,7 @@ body {
 }
 
 .container {
+  display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   width: 720px;
@@ -82,21 +88,46 @@ body {
   border-color: white;
 }
 
+.title-container {
+  display: flex;
+  justify-content: center;
+}
+
 .task-row {
   display: flex;
 }
 
-.task-row > * {
-  margin: 0.5em;
+.task-desc {
+	display: flex;
+	width: 100%;
 }
 
 .input {
   font-size: 1.5em;
 }
 
+.task-desc-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  margin: 0.5em;
+}
+
+.icon-container {
+  display: flex;
+}
+
 .icon {
+  display: flex;
+  justify-content: center;
   width: 30px;
   height: 30px;
+  margin: 0.5em;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
 }
 
 .plus-icon {

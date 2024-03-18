@@ -1,9 +1,9 @@
 import { useState } from "react";
-import TaskDescDisplay from "./TaskDescDisplay.jsx";
-import TaskDescEdit from "./TaskDescEdit.jsx";
-import deleteIcon from "./assets/delete.png";
-import checkedIcon from "./assets/checked.png";
-import timeIcon from "./assets/time.png";
+import TaskDescDisplay from "./task-desc-display.jsx";
+import TaskDescEdit from "./task-desc-edit.jsx";
+import deleteIcon from "../../assets/delete.png";
+import checkedIcon from "../../assets/checked.png";
+import timeIcon from "../../assets/time.png";
 
 const TaskRow = ({ task, onTaskCompleteChange, onTaskDescriptionChange, onTaskDelete }) => {
 
@@ -18,15 +18,17 @@ const TaskRow = ({ task, onTaskCompleteChange, onTaskDescriptionChange, onTaskDe
 
   return (
     <div className="task-row">
-      <div className="icon">{order}</div>
-      <div className="icon">
-        {
-          completed
-            ? <img className="icon" src={checkedIcon} onClick={() => onTaskCompleteChange(taskId)} />
-            : <img className="icon" src={timeIcon} onClick={() => onTaskCompleteChange(taskId)} />
-        }
-      </div>
-      <div className="desc-display">
+      <div ><p className="icon">{order}</p></div>
+      {
+        completed
+          ? <button onClick={() => onTaskCompleteChange(taskId)}>
+            <img className="icon" src={checkedIcon} />
+          </button>
+          : <button onClick={() => onTaskCompleteChange(taskId)}>
+            <img className="icon" src={timeIcon} />
+          </button>
+      }
+      <div className="task-desc">
         {
           isEditing
             ? <TaskDescEdit
@@ -42,11 +44,14 @@ const TaskRow = ({ task, onTaskCompleteChange, onTaskDescriptionChange, onTaskDe
         }
       </div>
       <div>
-        <img
+        <button
           className="icon"
-          src={deleteIcon}
           onClick={handleTaskDelete}
-        />
+        >
+          <img
+            src={deleteIcon}
+          />
+        </button>
       </div>
     </div>
   );

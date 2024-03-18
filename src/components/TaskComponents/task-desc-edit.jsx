@@ -1,4 +1,4 @@
-import saveIcon from "./assets/save.png";
+import saveIcon from "../../assets/save.png";
 
 const TaskDescEdit = ({ taskId, onTaskDescriptionChange, onEditEditModeUpdate, description }) => {
 

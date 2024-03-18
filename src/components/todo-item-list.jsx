@@ -1,4 +1,4 @@
-import TaskRow from "../TaskRow.jsx";
+import TaskRow from "./TaskComponents/task-row";
 
 const TodoItemList = ({ taskList, ...rest }) => (
   <div>

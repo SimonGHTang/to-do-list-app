@@ -1,9 +1,9 @@
 import { useState } from "react";
 import MainLayout from "./layouts/main-layout.jsx";
-import Container from "./components/container.jsx";
-import TaskItemList from "./components/todo-item-list.jsx";
-import TodoHeader from "./components/todo-header.jsx";
-import TodoFooter from "./components/todo-footer.jsx";
+import Container from "./Components/container.jsx";
+import TaskItemList from "./Components/todo-item-list.jsx";
+import TodoHeader from "./Components/todo-header.jsx";
+import TodoFooter from "./Components/todo-footer.jsx";
 
 function App() {
   const initialTaskList = JSON.parse(localStorage.getItem("taskList")) || [];

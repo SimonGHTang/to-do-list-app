@@ -1,8 +1,8 @@
-import editIcon from './assets/pencil.png'
+import editIcon from '../../assets/pencil.png'
 
 const TaskDescDisplay = ({ handleClick, description }) => (
   <>
-    <span onClick={handleClick}>{description}</span>
+    <p className='task-desc-text' onClick={handleClick}>{description}</p>
     <img className='icon' onClick={handleClick} src={editIcon}/>
   </>
 )
