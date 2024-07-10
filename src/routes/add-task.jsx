@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import TaskService from "../services/task-services.jsx"
 import MainLayout from "../layouts/main-layout.jsx";
 import Container from "../layouts/container.jsx";
 import TodoHeader from "../components/todo-header.jsx";
@@ -28,6 +29,7 @@ function AddTaskPage() {
 
     setTaskList(updatedTaskList)
 		updateLocalStorage(updatedTaskList);
+		TaskService.getTaskList();
 	}
 	
 	const updateLocalStorage = (updatedTaskList) => {
