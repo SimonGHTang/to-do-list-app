@@ -102,8 +102,16 @@ body {
 	width: 100%;
 }
 
-.input {
-  font-size: 1.5em;
+.task-desc-input {
+  display: flex;
+	align-self: center;
+  justify-self: center;
+  font-size: 1em;
+	height: 30px;
+	padding: 0px;
+	padding-left: 2px;
+	border-width: 1px;
+	margin: 0.5em;
 }
 
 .task-desc-text {
@@ -130,7 +138,7 @@ body {
   justify-content: center;
 }
 
-.plus-icon {
+.footer-icon {
   height: 50px;
   width: 50px;
   margin: 2em;

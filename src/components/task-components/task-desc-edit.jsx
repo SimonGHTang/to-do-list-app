@@ -25,6 +25,7 @@ const TaskDescEdit = ({ taskId, onTaskDescriptionChange, onEditEditModeUpdate, d
   return (
     <>
       <input
+				className="task-desc-input"
         autoFocus
         defaultValue={description}
         onChange={handleUpdateDescription}
