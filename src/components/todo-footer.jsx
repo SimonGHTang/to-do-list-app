@@ -1,8 +1,7 @@
-import plusIcon from "../assets/plus.png";
-
-const TodoFooter = ({ onAddNewTask }) => (
+const TodoFooter = ({ children }) => (
   <div className="footer">
-    <img className="plus-icon" onClick={onAddNewTask} src={plusIcon} />
+    {children}
+		
   </div>
 )
 

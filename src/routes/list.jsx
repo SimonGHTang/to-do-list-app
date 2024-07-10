@@ -1,11 +1,13 @@
 import { useState } from "react";
-import MainLayout from "./layouts/main-layout.jsx";
-import Container from "./Components/container.jsx";
-import TaskItemList from "./Components/todo-item-list.jsx";
-import TodoHeader from "./Components/todo-header.jsx";
-import TodoFooter from "./Components/todo-footer.jsx";
+import { Link } from "react-router-dom";
+import MainLayout from "../layouts/main-layout.jsx";
+import Container from "../layouts/container.jsx";
+import TaskItemList from "../components/todo-item-list.jsx";
+import TodoHeader from "../components/todo-header.jsx";
+import TodoFooter from "../components/todo-footer.jsx";
+import plusIcon from "../assets/plus.png";
 
-function App() {
+function TodoListPage() {
   const initialTaskList = JSON.parse(localStorage.getItem("taskList")) || [];
 
   const [taskList, setTaskList] = useState(initialTaskList);
@@ -81,10 +83,14 @@ function App() {
           onTaskDescriptionChange={handleTaskDescriptionChange}
           onTaskDelete={handleDeleteTask}
         />
-        <TodoFooter onAddNewTask={handleAddNewTask} />
+        <TodoFooter>
+					<Link to={`/add-task`}>
+						<img className="footer-icon" src={plusIcon} />
+					</Link>
+				</TodoFooter>
       </Container>
     </MainLayout>
   );
 }
 
-export default App;
+export default TodoListPage;
