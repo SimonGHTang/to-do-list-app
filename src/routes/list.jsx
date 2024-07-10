@@ -16,23 +16,6 @@ function TodoListPage() {
     localStorage.setItem("taskList", JSON.stringify(updatedTaskList))
   }
 
-  function handleAddNewTask() {
-    console.log('handleAddNewTask');
-
-    const updatedTaskList = [
-      ...taskList,
-      {
-        key: crypto.randomUUID(),
-        order: 1,
-        completed: false,
-        description: "New Task",
-      }
-    ]
-
-    setTaskList(updatedTaskList)
-    updateLocalStorage(updatedTaskList);
-  }
-
   const handleTaskCompleteChange = (taskId) => {
     console.log('handleTaskCompleteChange');
 

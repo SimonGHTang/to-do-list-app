@@ -8,12 +8,49 @@ import saveIcon from "../assets/save.png";
 import deleteIcon from "../assets/delete.png";
 
 function AddTaskPage() {
-	function handleAddNewTask() {}
+  const initialTaskList = JSON.parse(localStorage.getItem("taskList")) || [];
+
+  const [taskList, setTaskList] = useState(initialTaskList);
+	const [newTaskDescription, setNewTaskDescription] = useState("");
+
+	function handleAddNewTask() {
+    console.log('handleAddNewTask');
+
+		const updatedTaskList = [
+      ...taskList,
+			{
+				key: crypto.randomUUID(),
+				order: 1,
+				completed: false,
+				description: newTaskDescription,
+			}
+		]
+
+    setTaskList(updatedTaskList)
+		updateLocalStorage(updatedTaskList);
+	}
+	
+	const updateLocalStorage = (updatedTaskList) => {
+    localStorage.setItem("taskList", JSON.stringify(updatedTaskList))
+  }
+
+	const handleNewTaskDescriptionChange = (event) => {
+		setNewTaskDescription(event.target.value)
+	}
 
 	return (
 		<MainLayout>
 			<Container>
         <TodoHeader title="New Task" />
+				<div>
+					<label>New Task Description:</label>
+					<input
+						className="task-desc-input"
+						autoFocus
+						defaultValue={newTaskDescription}
+						onChange={handleNewTaskDescriptionChange}
+					/>
+				</div>
 				<TodoFooter>
 					<Link to={`/`}>
 						<img className="footer-icon" src={deleteIcon} />
