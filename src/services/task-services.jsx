@@ -1,13 +1,18 @@
 import axios from 'axios';
 
 const taskService = axios.create({
-  baseURL: 'http://localhost:3000/taskDatabase',
-  timeout: 3000,
+	baseURL: 'http://localhost:3000/taskDatabase',
+	timeout: 3000,
 });
 
 async function getTaskList() {
 	const response = await taskService.get(`/`);
-	console.log(response);
+	return response.data;
 }
 
-export default { getTaskList, };
+async function getTaskById(id) {
+	const response = await taskService.get(`/${id}`);
+	return response.data;
+}
+
+export default { getTaskList, getTaskById };

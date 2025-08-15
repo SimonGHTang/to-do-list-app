@@ -9,32 +9,32 @@ import saveIcon from "../assets/save.png";
 import deleteIcon from "../assets/delete.png";
 
 function AddTaskPage() {
-  const initialTaskList = JSON.parse(localStorage.getItem("taskList")) || [];
+	const initialTaskList = JSON.parse(localStorage.getItem("taskList")) || [];
 
-  const [taskList, setTaskList] = useState(initialTaskList);
+	const [taskList, setTaskList] = useState(initialTaskList);
 	const [newTaskDescription, setNewTaskDescription] = useState("");
 
 	function handleAddNewTask() {
-    console.log('handleAddNewTask');
+		console.log('handleAddNewTask');
 
 		const updatedTaskList = [
-      ...taskList,
+			...taskList,
 			{
-				key: crypto.randomUUID(),
+				taskId: crypto.randomUUID(),
 				order: 1,
 				completed: false,
 				description: newTaskDescription,
 			}
 		]
 
-    setTaskList(updatedTaskList)
+		setTaskList(updatedTaskList)
 		updateLocalStorage(updatedTaskList);
 		TaskService.getTaskList();
 	}
 	
 	const updateLocalStorage = (updatedTaskList) => {
-    localStorage.setItem("taskList", JSON.stringify(updatedTaskList))
-  }
+		localStorage.setItem("taskList", JSON.stringify(updatedTaskList))
+	}
 
 	const handleNewTaskDescriptionChange = (event) => {
 		setNewTaskDescription(event.target.value)
@@ -43,7 +43,7 @@ function AddTaskPage() {
 	return (
 		<MainLayout>
 			<Container>
-        <TodoHeader title="New Task" />
+				<TodoHeader title="New Task" />
 				<div>
 					<label>New Task Description:</label>
 					<input
