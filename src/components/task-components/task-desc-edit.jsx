@@ -23,7 +23,7 @@ const TaskDescEdit = ({ taskId, onTaskDescriptionChange, onEditEditModeUpdate, d
 	}
 
 	return (
-		<>
+		<div className='spaced-task-display'>
 			<input
 				className="task-desc-input"
 				autoFocus
@@ -32,7 +32,7 @@ const TaskDescEdit = ({ taskId, onTaskDescriptionChange, onEditEditModeUpdate, d
 				onKeyDown={handleEnterKeyPress}
 			/>
 			<img className="icon" onClick={handleUpdateEditMode} src={saveIcon} />
-		</>
+		</div>
 	);
 };
 

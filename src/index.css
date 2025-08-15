@@ -93,6 +93,13 @@ body {
   justify-content: center;
 }
 
+.spaced-task-display {
+	display: flex;
+	width: 100%;
+	align-items: space-between;
+	justify-content: space-between;
+}
+
 .task-row {
   display: flex;
 }
