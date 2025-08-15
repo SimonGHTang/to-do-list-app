@@ -2,9 +2,9 @@ import TaskRow from "./task-components/task-row";
 
 const TodoItemList = ({ taskList, ...rest }) => (
 	<div>
-		{taskList.map((task, key) => (
+		{taskList.map((task) => (
 			<TaskRow
-				key={key}
+				key={task.id}
 				task={task}
 				{...rest}
 			/>

@@ -57,12 +57,13 @@ function TodoListPage() {
 		updateLocalStorage(updatedTaskList);
 	};
 
-	const handleDeleteTask = (taskId) => {
-		console.log('handleDelete', taskId)
-		const updatedTaskList = taskList.filter((task) => taskId !== task.id);
-
-		setTaskList(updatedTaskList);
-		updateLocalStorage(updatedTaskList);
+	const handleDeleteTask = async (id) => {
+		console.log('handleDelete', id)
+		const response = await TaskService.deleteTaskById(id);
+		if (response.status == 200) {
+			const updatedTaskList = taskList.filter((task) => id !== task.id);
+			setTaskList(updatedTaskList);
+		}
 	};
 
 	return (

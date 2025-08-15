@@ -7,7 +7,7 @@ import timeIcon from "../../assets/time.png";
 
 const TaskRow = ({ task, onTaskCompleteChange, onTaskDescriptionChange, onTaskDelete }) => {
 
-	const { key: id, order, completed, description } = task;
+	const { id, order, completed, description } = task;
 
 	const [ isEditing, setIsEditing ] = useState(false);
 
