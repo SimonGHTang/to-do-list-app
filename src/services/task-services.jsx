@@ -15,10 +15,15 @@ async function getTaskById(id) {
 	return response.data;
 }
 
+async function addTask(task) {
+	const response = await taskService.post(`/`, {task});
+	return response;
+}
+
 
 async function deleteTaskById(id) {
 	const response = await taskService.delete(`/${id}`);
 	return response;
 }
 
-export default { getTaskList, getTaskById, deleteTaskById };
+export default { getTaskList, getTaskById, addTask, deleteTaskById };

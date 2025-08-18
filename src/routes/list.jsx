@@ -10,16 +10,20 @@ import plusIcon from "../assets/plus.png";
 
 function TodoListPage() {
 	const [taskList, setTaskList] = useState([]);
+	const [newOrder, setNewOrder] = useState(0);
 
 	useEffect(() => {
-		const getTastList = async () => {
-			const list = await TaskService.getTaskList()
-
-			setTaskList(list);
-		}
-
-		getTastList();
+		updateTaskList();
 	}, []);
+
+	const updateTaskList = async () => {
+		const list = await TaskService.getTaskList();
+
+		console.log('task list', list);
+
+		setTaskList(list);
+		setNewOrder(list.at(-1)?.order + 1);
+	}
 
 	const updateLocalStorage = (updatedTaskList) => {
 		localStorage.setItem("taskList", JSON.stringify(updatedTaskList))
@@ -58,7 +62,6 @@ function TodoListPage() {
 	};
 
 	const handleDeleteTask = async (id) => {
-		console.log('handleDelete', id)
 		const response = await TaskService.deleteTaskById(id);
 		if (response.status == 200) {
 			const updatedTaskList = taskList.filter((task) => id !== task.id);
@@ -77,7 +80,7 @@ function TodoListPage() {
 					onTaskDelete={handleDeleteTask}
 				/>
 				<TodoFooter>
-					<Link to={`/add-task`}>
+					<Link to={`/add-task`} state={{newOrder}}>
 						<img className="footer-icon" src={plusIcon} />
 					</Link>
 				</TodoFooter>

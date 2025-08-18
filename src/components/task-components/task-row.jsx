@@ -9,7 +9,7 @@ const TaskRow = ({ task, onTaskCompleteChange, onTaskDescriptionChange, onTaskDe
 
 	const { id, order, completed, description } = task;
 
-	const [ isEditing, setIsEditing ] = useState(false);
+	const [ isEditing, setIsEditing ] = useState(task.isNew || false);
 
 	const handleTaskDelete = () => {
 		setIsEditing(false);

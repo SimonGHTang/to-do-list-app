@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import TaskService from "../services/task-services.jsx"
 import MainLayout from "../layouts/main-layout.jsx";
 import Container from "../layouts/container.jsx";
@@ -9,31 +9,22 @@ import saveIcon from "../assets/save.png";
 import deleteIcon from "../assets/delete.png";
 
 function AddTaskPage() {
-	const initialTaskList = JSON.parse(localStorage.getItem("taskList")) || [];
+	const {state} = useLocation();
+	const navigate = useNavigate();
 
-	const [taskList, setTaskList] = useState(initialTaskList);
 	const [newTaskDescription, setNewTaskDescription] = useState("");
 
-	function handleAddNewTask() {
-		console.log('handleAddNewTask');
+	async function handleAddNewTask() {
+		const newTask = {
+			order: state.newOrder,
+			completed: false,
+			description: newTaskDescription,
+		}
 
-		const updatedTaskList = [
-			...taskList,
-			{
-				taskId: crypto.randomUUID(),
-				order: 1,
-				completed: false,
-				description: newTaskDescription,
-			}
-		]
-
-		setTaskList(updatedTaskList)
-		updateLocalStorage(updatedTaskList);
-		TaskService.getTaskList();
-	}
-	
-	const updateLocalStorage = (updatedTaskList) => {
-		localStorage.setItem("taskList", JSON.stringify(updatedTaskList))
+		const response = await TaskService.addTask(newTask);
+		if (response.status === 200) {
+			navigate('/');
+		}
 	}
 
 	const handleNewTaskDescriptionChange = (event) => {
@@ -57,9 +48,9 @@ function AddTaskPage() {
 					<Link to={`/`}>
 						<img className="footer-icon" src={deleteIcon} />
 					</Link>
-					<Link to={`/`}>
+					<button to={`/`}>
 						<img className="footer-icon" onClick={handleAddNewTask} src={saveIcon} />
-					</Link>
+					</button>
 				</TodoFooter>
 			</Container>
 		</MainLayout>
