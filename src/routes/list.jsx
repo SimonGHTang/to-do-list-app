@@ -16,10 +16,10 @@ function TodoListPage() {
 		updateTaskList();
 	}, []);
 
-	updateOrder = () => {
-		if (list.at(-1))
-			setNewOrder(list.at(-1)?.order + 1);
-	}
+	useEffect(() => {
+		if (taskList.at(-1))
+			setNewOrder(taskList.at(-1)?.order + 1);
+	}, [taskList])
 
 	const updateTaskList = async () => {
 		const list = await TaskService.getTaskList();
@@ -27,7 +27,6 @@ function TodoListPage() {
 		console.log('task list', list);
 
 		setTaskList(list);
-		updateOrder();
 	}
 
 	const updateLocalStorage = (updatedTaskList) => {
@@ -71,8 +70,6 @@ function TodoListPage() {
 		if (response.status == 200) {
 			const updatedTaskList = taskList.filter((task) => id !== task.id);
 			setTaskList(updatedTaskList);
-			updateOrder();
-
 		}
 	};
 
