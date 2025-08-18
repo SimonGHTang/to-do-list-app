@@ -20,10 +20,14 @@ async function addTask(task) {
 	return response;
 }
 
+async function editTask(task) {
+	const response = await taskSerice.put('/', {task});
+	return response;
+}
 
 async function deleteTaskById(id) {
 	const response = await taskService.delete(`/${id}`);
 	return response;
 }
 
-export default { getTaskList, getTaskById, addTask, deleteTaskById };
+export default { getTaskList, getTaskById, addTask, editTask, deleteTaskById };

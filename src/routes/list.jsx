@@ -10,11 +10,16 @@ import plusIcon from "../assets/plus.png";
 
 function TodoListPage() {
 	const [taskList, setTaskList] = useState([]);
-	const [newOrder, setNewOrder] = useState(0);
+	const [newOrder, setNewOrder] = useState(1);
 
 	useEffect(() => {
 		updateTaskList();
 	}, []);
+
+	updateOrder = () => {
+		if (list.at(-1))
+			setNewOrder(list.at(-1)?.order + 1);
+	}
 
 	const updateTaskList = async () => {
 		const list = await TaskService.getTaskList();
@@ -22,7 +27,7 @@ function TodoListPage() {
 		console.log('task list', list);
 
 		setTaskList(list);
-		setNewOrder(list.at(-1)?.order + 1);
+		updateOrder();
 	}
 
 	const updateLocalStorage = (updatedTaskList) => {
@@ -66,6 +71,8 @@ function TodoListPage() {
 		if (response.status == 200) {
 			const updatedTaskList = taskList.filter((task) => id !== task.id);
 			setTaskList(updatedTaskList);
+			updateOrder();
+
 		}
 	};
 

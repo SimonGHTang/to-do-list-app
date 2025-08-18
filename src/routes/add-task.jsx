@@ -21,6 +21,8 @@ function AddTaskPage() {
 			description: newTaskDescription,
 		}
 
+		console.log(state.newOrder);
+
 		const response = await TaskService.addTask(newTask);
 		if (response.status === 200) {
 			navigate('/');
