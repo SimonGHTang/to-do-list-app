@@ -1,20 +1,13 @@
+import { useState } from "react";
 import saveIcon from "../../assets/save.png";
 
-const TaskDescEdit = ({ taskId, onTaskDescriptionChange, onEditEditModeUpdate, description }) => {
-
-	const handleUpdateDescription = (event) => {
-		const updatedDescription = event.target.value;
-		onTaskDescriptionChange(taskId, updatedDescription);
-	}
+const TaskDescEdit = ({ taskId, onTaskDescriptionChange, onEditEditModeUpdate, descriptionProp }) => {
+	const [description, setDescription] = useState(descriptionProp);
 
 	const handleEnterKeyPress = (event) => {
 		if (event.key === 'Enter') {
 			saveDescriptionUpdateEditMode();
 		}
-	}
-
-	const handleUpdateEditMode = () => {
-		saveDescriptionUpdateEditMode();
 	}
 
 	const saveDescriptionUpdateEditMode = () => {
@@ -28,10 +21,10 @@ const TaskDescEdit = ({ taskId, onTaskDescriptionChange, onEditEditModeUpdate, d
 				className="task-desc-input"
 				autoFocus
 				defaultValue={description}
-				onChange={handleUpdateDescription}
+				onChange={((event) => {setDescription(event.target.value)})}
 				onKeyDown={handleEnterKeyPress}
 			/>
-			<img className="icon" onClick={handleUpdateEditMode} src={saveIcon} />
+			<img className="icon" onClick={saveDescriptionUpdateEditMode} src={saveIcon} />
 		</div>
 	);
 };

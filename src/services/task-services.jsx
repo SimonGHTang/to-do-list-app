@@ -21,7 +21,7 @@ async function addTask(task) {
 }
 
 async function editTask(task) {
-	const response = await taskSerice.put('/', {task});
+	const response = await taskService.put(`/`, {task});
 	return response;
 }
 

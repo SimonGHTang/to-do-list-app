@@ -32,10 +32,10 @@ const TaskRow = ({ task, onTaskCompleteChange, onTaskDescriptionChange, onTaskDe
 				{
 					isEditing
 						? <TaskDescEdit
-							taskId={id}
+							taskId={task.id}
 							onTaskDescriptionChange={onTaskDescriptionChange}
 							onEditEditModeUpdate={setIsEditing}
-							description={description}
+							descriptionProp={description}
 						/>
 						: <TaskDescDisplay
 							handleClick={() => setIsEditing(true)}

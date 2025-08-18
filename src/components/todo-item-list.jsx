@@ -1,6 +1,6 @@
 import TaskRow from "./task-components/task-row";
 
-const TodoItemList = ({ taskList, ...rest }) => (
+const TodoItemList = ({ taskList, ...rest }) => (	
 	<div>
 		{taskList.map((task) => (
 			<TaskRow

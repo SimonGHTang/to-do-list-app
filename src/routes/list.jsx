@@ -23,46 +23,44 @@ function TodoListPage() {
 
 	const updateTaskList = async () => {
 		const list = await TaskService.getTaskList();
-
-		console.log('task list', list);
-
 		setTaskList(list);
 	}
 
-	const updateLocalStorage = (updatedTaskList) => {
-		localStorage.setItem("taskList", JSON.stringify(updatedTaskList))
+	const handleTaskCompleteChange = async (taskId) => {
+		const changedTask = taskList.find((task) => task.id = taskId);
+		const response = await TaskService.editTask({...changedTask, completed: !changedTask.completed});
+
+		if (response.status == 200) {
+			const updatedTaskList = taskList.map((task) => {
+				if (task.id !== taskId) return task;
+
+					return {
+						...task,
+						completed: !task.completed,
+					}
+			})
+
+			setTaskList(updatedTaskList);
+		}
 	}
 
-	const handleTaskCompleteChange = (taskId) => {
-		console.log('handleTaskCompleteChange');
+	const handleTaskDescriptionChange = async (taskId, updatedDescription) => {
+		const changedTask = taskList.find((task) => task.id = taskId);
+		// editTask.description = updatedDescription;
+		const response = await TaskService.editTask({...changedTask, description: updatedDescription});
 
-		const updatedTaskList = taskList.map((task) => {
-			if (task.id !== taskId) return task;
+		if (response.status == 200) {
+			const updatedTaskList = taskList.map((task) => {
+				if (task.id !== taskId) return task;
 
-			return {
-				...task,
-				completed: !task.completed,
-			}
-		})
+					return {
+						...task,
+						description: updatedDescription,
+					}
+			})
 
-		setTaskList(updatedTaskList);
-		updateLocalStorage(updatedTaskList);
-	}
-
-	const handleTaskDescriptionChange = (taskId, updatedDescription) => {
-		console.log('handleTaskDescriptionChange');
-
-		const updatedTaskList = taskList.map((task) => {
-			if (task.id !== taskId) return task;
-
-			return {
-				...task,
-				description: updatedDescription,
-			}
-		})
-
-		setTaskList(updatedTaskList);
-		updateLocalStorage(updatedTaskList);
+			setTaskList(updatedTaskList);
+		}
 	};
 
 	const handleDeleteTask = async (id) => {
