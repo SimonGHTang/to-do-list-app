@@ -4,6 +4,8 @@ import {
 	createBrowserRouter,
 	RouterProvider,
 } from "react-router-dom";
+import { Auth0Provider } from '@auth0/auth0-react';
+import Navbar from './components/navbar.jsx';
 import TodoListPage from './routes/list.jsx';
 import AddTaskPage from './routes/add-task.jsx';
 import ErrorPage from "./routes/error.jsx";
@@ -23,7 +25,16 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-	<React.StrictMode>
-		<RouterProvider router={router} />
-	</React.StrictMode>,
+	<Auth0Provider
+		domain="dev-qyfoibxrup0tyye6.au.auth0.com"
+		clientId="MhjAGhQn89YkZgYn32UPKc4YbzDOP2k9"
+		authorizationParams={{
+			redirect_uri: window.location.origin
+		}}
+	>
+		<React.StrictMode>
+			<Navbar/>
+			<RouterProvider router={router} />
+		</React.StrictMode>
+	</Auth0Provider>,
 )
