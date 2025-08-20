@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import TaskService from "../services/task-services.jsx";
 import MainLayout from "../layouts/main-layout.jsx";
 import Container from "../layouts/container.jsx";
 import TaskItemList from "../components/todo-item-list.jsx";
@@ -8,72 +9,86 @@ import TodoFooter from "../components/todo-footer.jsx";
 import plusIcon from "../assets/plus.png";
 
 function TodoListPage() {
-  const initialTaskList = JSON.parse(localStorage.getItem("taskList")) || [];
+	const [taskList, setTaskList] = useState([]);
+	const [newOrder, setNewOrder] = useState(1);
 
-  const [taskList, setTaskList] = useState(initialTaskList);
+	useEffect(() => {
+		updateTaskList();
+	}, []);
 
-  const updateLocalStorage = (updatedTaskList) => {
-    localStorage.setItem("taskList", JSON.stringify(updatedTaskList))
-  }
+	useEffect(() => {
+		if (taskList.at(-1))
+			setNewOrder(taskList.at(-1)?.order + 1);
+	}, [taskList])
 
-  const handleTaskCompleteChange = (taskId) => {
-    console.log('handleTaskCompleteChange');
+	const updateTaskList = async () => {
+		const list = await TaskService.getTaskList();
+		setTaskList(list);
+	}
 
-    const updatedTaskList = taskList.map((task) => {
-      if (task.key !== taskId) return task;
+	const handleTaskCompleteChange = async (taskId) => {
+		const changedTask = taskList.find((task) => task.id = taskId);
+		const response = await TaskService.editTask({...changedTask, completed: !changedTask.completed});
 
-      return {
-        ...task,
-        completed: !task.completed,
-      }
-    })
+		if (response.status == 200) {
+			const updatedTaskList = taskList.map((task) => {
+				if (task.id !== taskId) return task;
 
-    setTaskList(updatedTaskList);
-    updateLocalStorage(updatedTaskList);
-  }
+					return {
+						...task,
+						completed: !task.completed,
+					}
+			})
 
-  const handleTaskDescriptionChange = (taskId, updatedDescription) => {
-    console.log('handleTaskDescriptionChange');
+			setTaskList(updatedTaskList);
+		}
+	}
 
-    const updatedTaskList = taskList.map((task) => {
-      if (task.key !== taskId) return task;
+	const handleTaskDescriptionChange = async (taskId, updatedDescription) => {
+		const changedTask = taskList.find((task) => task.id = taskId);
+		// editTask.description = updatedDescription;
+		const response = await TaskService.editTask({...changedTask, description: updatedDescription});
 
-      return {
-        ...task,
-        description: updatedDescription,
-      }
-    })
+		if (response.status == 200) {
+			const updatedTaskList = taskList.map((task) => {
+				if (task.id !== taskId) return task;
 
-    setTaskList(updatedTaskList);
-    updateLocalStorage(updatedTaskList);
-  };
+					return {
+						...task,
+						description: updatedDescription,
+					}
+			})
 
-  const handleDeleteTask = (taskId) => {
-    console.log('handleDelete', taskId)
-    const updatedTaskList = taskList.filter(({ key }) => taskId !== key);
+			setTaskList(updatedTaskList);
+		}
+	};
 
-    setTaskList(updatedTaskList);
-    updateLocalStorage(updatedTaskList);
-  };
+	const handleDeleteTask = async (id) => {
+		const response = await TaskService.deleteTaskById(id);
+		if (response.status == 200) {
+			const updatedTaskList = taskList.filter((task) => id !== task.id);
+			setTaskList(updatedTaskList);
+		}
+	};
 
-  return (
-    <MainLayout>
-      <Container>
-        <TodoHeader title="Task List" />
-        <TaskItemList
-          taskList={taskList}
-          onTaskCompleteChange={handleTaskCompleteChange}
-          onTaskDescriptionChange={handleTaskDescriptionChange}
-          onTaskDelete={handleDeleteTask}
-        />
-        <TodoFooter>
-					<Link to={`/add-task`}>
+	return (
+		<MainLayout>
+			<Container>
+				<TodoHeader title="Task List" />
+				<TaskItemList
+					taskList={taskList}
+					onTaskCompleteChange={handleTaskCompleteChange}
+					onTaskDescriptionChange={handleTaskDescriptionChange}
+					onTaskDelete={handleDeleteTask}
+				/>
+				<TodoFooter>
+					<Link to={`/add-task`} state={{newOrder}}>
 						<img className="footer-icon" src={plusIcon} />
 					</Link>
 				</TodoFooter>
-      </Container>
-    </MainLayout>
-  );
+			</Container>
+		</MainLayout>
+	);
 }
 
 export default TodoListPage;

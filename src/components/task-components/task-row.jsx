@@ -7,54 +7,54 @@ import timeIcon from "../../assets/time.png";
 
 const TaskRow = ({ task, onTaskCompleteChange, onTaskDescriptionChange, onTaskDelete }) => {
 
-  const { key: taskId, order, completed, description } = task;
+	const { id, order, completed, description } = task;
 
-  const [ isEditing, setIsEditing ] = useState(false);
+	const [ isEditing, setIsEditing ] = useState(task.isNew || false);
 
-  const handleTaskDelete = () => {
-    setIsEditing(false);
-    onTaskDelete(taskId);
-  }
+	const handleTaskDelete = () => {
+		setIsEditing(false);
+		onTaskDelete(id);
+	}
 
-  return (
-    <div className="task-row">
-      <div ><p className="icon">{order}</p></div>
-      {
-        completed
-          ? <button onClick={() => onTaskCompleteChange(taskId)}>
-            <img className="icon" src={checkedIcon} />
-          </button>
-          : <button onClick={() => onTaskCompleteChange(taskId)}>
-            <img className="icon" src={timeIcon} />
-          </button>
-      }
-      <div className="task-desc">
-        {
-          isEditing
-            ? <TaskDescEdit
-              taskId={taskId}
-              onTaskDescriptionChange={onTaskDescriptionChange}
-              onEditEditModeUpdate={setIsEditing}
-              description={description}
-            />
-            : <TaskDescDisplay
-              handleClick={() => setIsEditing(true)}
-              description={description}
-            />
-        }
-      </div>
-      <div>
-        <button
-          className="icon"
-          onClick={handleTaskDelete}
-        >
-          <img
-            src={deleteIcon}
-          />
-        </button>
-      </div>
-    </div>
-  );
+	return (
+		<div className="task-row">
+			<div ><p className="icon">{order}</p></div>
+			{
+				completed
+					? <button onClick={() => onTaskCompleteChange(id)}>
+						<img className="icon" src={checkedIcon} />
+					</button>
+					: <button onClick={() => onTaskCompleteChange(id)}>
+						<img className="icon" src={timeIcon} />
+					</button>
+			}
+			<div className="task-desc">
+				{
+					isEditing
+						? <TaskDescEdit
+							taskId={task.id}
+							onTaskDescriptionChange={onTaskDescriptionChange}
+							onEditEditModeUpdate={setIsEditing}
+							descriptionProp={description}
+						/>
+						: <TaskDescDisplay
+							handleClick={() => setIsEditing(true)}
+							description={description}
+						/>
+				}
+			</div>
+			<div>
+				<button
+					className="icon"
+					onClick={handleTaskDelete}
+				>
+					<img
+						src={deleteIcon}
+					/>
+				</button>
+			</div>
+		</div>
+	);
 };
 
 export default TaskRow;

@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import TaskService from "../services/task-services.jsx"
 import MainLayout from "../layouts/main-layout.jsx";
 import Container from "../layouts/container.jsx";
 import TodoHeader from "../components/todo-header.jsx";
@@ -8,31 +9,25 @@ import saveIcon from "../assets/save.png";
 import deleteIcon from "../assets/delete.png";
 
 function AddTaskPage() {
-  const initialTaskList = JSON.parse(localStorage.getItem("taskList")) || [];
+	const {state} = useLocation();
+	const navigate = useNavigate();
 
-  const [taskList, setTaskList] = useState(initialTaskList);
 	const [newTaskDescription, setNewTaskDescription] = useState("");
 
-	function handleAddNewTask() {
-    console.log('handleAddNewTask');
+	async function handleAddNewTask() {
+		const newTask = {
+			order: state.newOrder,
+			completed: false,
+			description: newTaskDescription,
+		}
 
-		const updatedTaskList = [
-      ...taskList,
-			{
-				key: crypto.randomUUID(),
-				order: 1,
-				completed: false,
-				description: newTaskDescription,
-			}
-		]
+		console.log(state.newOrder);
 
-    setTaskList(updatedTaskList)
-		updateLocalStorage(updatedTaskList);
+		const response = await TaskService.addTask(newTask);
+		if (response.status === 200) {
+			navigate('/');
+		}
 	}
-	
-	const updateLocalStorage = (updatedTaskList) => {
-    localStorage.setItem("taskList", JSON.stringify(updatedTaskList))
-  }
 
 	const handleNewTaskDescriptionChange = (event) => {
 		setNewTaskDescription(event.target.value)
@@ -41,7 +36,7 @@ function AddTaskPage() {
 	return (
 		<MainLayout>
 			<Container>
-        <TodoHeader title="New Task" />
+				<TodoHeader title="New Task" />
 				<div>
 					<label>New Task Description:</label>
 					<input
@@ -55,9 +50,9 @@ function AddTaskPage() {
 					<Link to={`/`}>
 						<img className="footer-icon" src={deleteIcon} />
 					</Link>
-					<Link to={`/`}>
+					<button to={`/`}>
 						<img className="footer-icon" onClick={handleAddNewTask} src={saveIcon} />
-					</Link>
+					</button>
 				</TodoFooter>
 			</Container>
 		</MainLayout>

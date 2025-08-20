@@ -1,8 +1,8 @@
 const TodoFooter = ({ children }) => (
-  <div className="footer">
-    {children}
+	<div className="footer">
+		{children}
 		
-  </div>
+	</div>
 )
 
 export default TodoFooter;
