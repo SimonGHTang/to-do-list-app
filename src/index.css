@@ -77,6 +77,25 @@ body {
   align-items: center;
 }
 
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.user-nav-text {
+	margin: 10px;
+}
+
+.user-icon {
+  height: 75px;
+  width: 75px;
+}
+
+.log-in-out-button {
+	height: 100%;
+	padding: 0.5rem;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -151,10 +170,7 @@ body {
   margin: 2em;
 }
 
-.navbar {
-	background-color: #f8f9fa;
-  padding: 1rem 2rem;
-  border-bottom: 1px solid #e2e8f0;
+.nav-bar {
 	width: 100%;
   display: flex;
   flex-direction: row;

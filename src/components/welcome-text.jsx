@@ -9,9 +9,12 @@ const WelcomeText = () => {
 
 	return (
 		isAuthenticated && (
-			<div>
-				<img src={user.picture} alt={user.name} />
-				<h2>{user.name}</h2>
+			<div className="flex-row">
+				<img className="user-icon" src={user.picture} alt={user.name} />
+				<div>
+					<h4 className="user-nav-text">Welcome {user.name}!</h4>
+					<p className="user-nav-text">{user.email}</p>
+				</div>
 			</div>
 		)
 	)

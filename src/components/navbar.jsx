@@ -12,7 +12,7 @@ const Navbar = () => {
 	}
 
 	return (
-		<div className='navBar'>
+		<div className='nav-bar'>
 			<WelcomeText/>
 
 			<div>
