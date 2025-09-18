@@ -22,7 +22,7 @@ function TodoListPage() {
 				},
 			});
 
-			const list = await TaskService.getTaskList(accessToken);
+			const list = await TaskService.getTaskListByUser(accessToken);
 			setTaskList(list);
 		}
 

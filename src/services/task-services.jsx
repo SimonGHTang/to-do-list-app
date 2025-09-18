@@ -3,7 +3,7 @@ import axios from 'axios';
 const apiService = (accessToken) => {
 	return axios.create({
 		baseURL: 'http://localhost:3000/taskDatabase',
-		timeout: 3000,
+		timeout: 30000,
 		headers: { "Authorization": `Bearer ${accessToken}` },
 	})
 };
@@ -14,9 +14,15 @@ async function getTaskList(token) {
 	return response.data;
 }
 
+async function getTaskListByUser(token) {
+	const taskService = apiService(token);
+	const response = await taskService.get(`/userTasks`);
+	return response.data;
+}
+
 async function getTaskById(token, id) {
 	const taskService = apiService(token);
-	const response = await taskService.get(`/${id}`);
+	const response = await taskService.get(`/task/${id}`);
 	return response.data;
 }
 
@@ -38,4 +44,4 @@ async function deleteTaskById(token, id) {
 	return response;
 }
 
-export default { getTaskList, getTaskById, addTask, editTask, deleteTaskById };
+export default { getTaskList, getTaskListByUser, getTaskById, addTask, editTask, deleteTaskById };
