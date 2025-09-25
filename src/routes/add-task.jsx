@@ -6,32 +6,44 @@ import MainLayout from "../layouts/main-layout.jsx";
 import Container from "../layouts/container.jsx";
 import TodoHeader from "../components/todo-header.jsx";
 import TodoFooter from "../components/todo-footer.jsx";
+import { useNotification } from "../providers/notification-context.jsx";
 import saveIcon from "../assets/save.png";
 import deleteIcon from "../assets/delete.png";
 
 function AddTaskPage() {
-	const { getAccessTokenSilently } = useAuth0();
+	const notify = useNotification();
+	const { getAccessTokenSilently, isAuthenticated } = useAuth0();
 	const {state} = useLocation();
 	const navigate = useNavigate();
 
 	const [newTaskDescription, setNewTaskDescription] = useState("");
 
 	async function handleAddNewTask() {
-		const accessToken = await getAccessTokenSilently({
-			authorizationParams: {
-				audience: 'https://dev-qyfoibxrup0tyye6.au.auth0.com/api/v2/',
-			},
-		});
+		try {
+			if (!isAuthenticated) {
+				throw new Error("please login to add new task.");
+			}
 
-		const newTask = {
-			order: state.newOrder,
-			completed: false,
-			description: newTaskDescription,
-		}
+			const accessToken = await getAccessTokenSilently({
+				authorizationParams: {
+					audience: 'https://dev-qyfoibxrup0tyye6.au.auth0.com/api/v2/',
+				},
+			});
 
-		const response = await TaskService.addTask(accessToken, newTask);
-		if (response.status === 200) {
+			const newTask = {
+				order: state.newOrder,
+				completed: false,
+				description: newTaskDescription,
+			}
+
+			const response = await TaskService.addTask(accessToken, newTask);
+			if (response.status !== 200) {
+				throw new Error(response.message || "Failed to add new task.");
+			}
+
 			navigate('/');
+		} catch (error) {
+			notify(error.message);
 		}
 	}
 

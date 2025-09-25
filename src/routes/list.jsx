@@ -7,23 +7,38 @@ import Container from "../layouts/container.jsx";
 import TaskItemList from "../components/todo-item-list.jsx";
 import TodoHeader from "../components/todo-header.jsx";
 import TodoFooter from "../components/todo-footer.jsx";
+import { useNotification } from "../providers/notification-context.jsx";
 import plusIcon from "../assets/plus.png";
 
+
 function TodoListPage() {
-	const { getAccessTokenSilently } = useAuth0();
+	const notify = useNotification();
+	const { getAccessTokenSilently, isAuthenticated } = useAuth0();
 	const [taskList, setTaskList] = useState([]);
 	const [newOrder, setNewOrder] = useState(1);
 
 	useEffect(() => {
 		async function updateTaskList() {
-			const accessToken = await getAccessTokenSilently({
-				authorizationParams: {
-					audience: 'https://dev-qyfoibxrup0tyye6.au.auth0.com/api/v2/',
-				},
-			});
+			try {
+				if (!isAuthenticated) {
+					throw new Error("Failed to fetch Task list.");
+				}
 
-			const list = await TaskService.getTaskListByUser(accessToken);
-			setTaskList(list);
+				const accessToken = await getAccessTokenSilently({
+					authorizationParams: {
+						audience: 'https://dev-qyfoibxrup0tyye6.au.auth0.com/api/v2/',
+					},
+				});
+
+				const response = await TaskService.getTaskListByUser(accessToken);
+				if (response.status !== 200) {
+					throw new Error(response.message || "Failed to fetch user task list.");
+				}
+				setTaskList(response.data);
+			} catch (error) {
+				notify(error.message);
+				throw error;
+			}
 		}
 
 		updateTaskList();
@@ -35,65 +50,85 @@ function TodoListPage() {
 	}, [taskList]);
 
 	const handleTaskCompleteChange = async (taskId) => {
-		const accessToken = await getAccessTokenSilently({
-			authorizationParams: {
-				audience: 'https://dev-qyfoibxrup0tyye6.au.auth0.com/api/v2/',
-			},
-		});
+		try {
+			const accessToken = await getAccessTokenSilently({
+				authorizationParams: {
+					audience: 'https://dev-qyfoibxrup0tyye6.au.auth0.com/api/v2/',
+				},
+			});
 
-		const changedTask = taskList.find((task) => task.id = taskId);
-		const response = await TaskService.editTask(accessToken, {...changedTask, completed: !changedTask.completed});
+			const changedTask = taskList.find((task) => task.id = taskId);
+			const response = await TaskService.editTask(accessToken, {...changedTask, completed: !changedTask.completed});
+			if (response.status !== 200) {
+				throw new Error(response.message || "Failed to fetch edit task completion.");
+			}
 
-		if (response.status == 200) {
 			const updatedTaskList = taskList.map((task) => {
-				if (task.id !== taskId) return task;
+				if (task.id !== taskId) 
+					return task;
 
-					return {
-						...task,
-						completed: !task.completed,
-					}
-			})
+				return {
+					...task,
+					completed: !task.completed,
+				}
+			});
 
 			setTaskList(updatedTaskList);
+		} catch (error) {
+			notify(error.message);
+			throw error;
 		}
 	}
 
 	const handleTaskDescriptionChange = async (taskId, updatedDescription) => {
-		const accessToken = await getAccessTokenSilently({
-			authorizationParams: {
-				audience: 'https://dev-qyfoibxrup0tyye6.au.auth0.com/api/v2/',
-			},
-		});
+		try {
+			const accessToken = await getAccessTokenSilently({
+				authorizationParams: {
+					audience: 'https://dev-qyfoibxrup0tyye6.au.auth0.com/api/v2/',
+				},
+			});
 
-		const changedTask = taskList.find((task) => task.id = taskId);
-		// editTask.description = updatedDescription;
-		const response = await TaskService.editTask(accessToken, {...changedTask, description: updatedDescription});
-
-		if (response.status == 200) {
+			const changedTask = taskList.find((task) => task.id = taskId);
+			const response = await TaskService.editTask(accessToken, {...changedTask, description: updatedDescription});
+			if (response.status !== 200) {
+				throw new Error(response.message || "Failed to edit task description.");
+			}
+			
 			const updatedTaskList = taskList.map((task) => {
-				if (task.id !== taskId) return task;
+				if (task.id !== taskId) 
+					return task;
 
-					return {
-						...task,
-						description: updatedDescription,
-					}
-			})
+				return {
+					...task,
+					description: updatedDescription,
+				}
+			});
 
 			setTaskList(updatedTaskList);
+		} catch (error) {
+			notify(error.message);
+			throw error;
 		}
 	};
 
 	const handleDeleteTask = async (id) => {
+		try {
 		const accessToken = await getAccessTokenSilently({
-			authorizationParams: {
-				audience: 'https://dev-qyfoibxrup0tyye6.au.auth0.com/api/v2/',
-			},
-		});
-		
-		const response = await TaskService.deleteTaskById(accessToken, id);
-		if (response.status == 200) {
+				authorizationParams: {
+					audience: 'https://dev-qyfoibxrup0tyye6.au.auth0.com/api/v2/',
+				},
+			});
+			
+			const response = await TaskService.deleteTaskById(accessToken, id);
+			if (response.status !== 200) {
+				throw new Error(response.message || "Failed to delete task.");
+			}
+
 			const updatedTaskList = taskList.filter((task) => id !== task.id);
 			setTaskList(updatedTaskList);
+		} catch (error) {
+			notify(error.message);
+			throw error;
 		}
 	};
 

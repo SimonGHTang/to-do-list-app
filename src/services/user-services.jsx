@@ -11,13 +11,13 @@ const apiService = (accessToken) => {
 async function checkLoginExists(token) {
 	const userService = apiService(token);
 	const response = await userService.post(`login/check`);
-	return response.data;
+	return response;
 }
 
 async function getUser(token) {
 	const userService = apiService(token);
 	const response = await userService.get(`/user`);
-	return response.data;
+	return response;
 }
 
 export default { checkLoginExists, getUser };
