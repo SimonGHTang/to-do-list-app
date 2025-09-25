@@ -1,10 +1,10 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {
 	createBrowserRouter,
 	RouterProvider,
 } from "react-router-dom";
 import { Auth0Provider } from '@auth0/auth0-react';
+import { NotificationProvider } from './providers/notification-context.jsx';
 import Navbar from './components/navbar.jsx';
 import TodoListPage from './routes/list.jsx';
 import AddTaskPage from './routes/add-task.jsx';
@@ -38,9 +38,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 			redirect_uri: window.location.origin
 		}}
 	>
-		{/* <React.StrictMode> */}
-			<Navbar/>
-			<RouterProvider router={router} />
-		{/* </React.StrictMode> */}
+		<NotificationProvider>
+			{/* <React.StrictMode> */}
+				<Navbar/>
+				<RouterProvider router={router} />
+			{/* </React.StrictMode> */}
+		</NotificationProvider>
 	</Auth0Provider>,
 )
