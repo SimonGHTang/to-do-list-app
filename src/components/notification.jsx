@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import deleteIcon from "../assets/delete.png";
+import cancelIcon from "../assets/cancel.png";
 
 function Notification({ message, onExpire, duration = 5000 }) {
 	const [fading, setFading] = useState(false);
@@ -16,8 +16,8 @@ function Notification({ message, onExpire, duration = 5000 }) {
 	return (
 		<div className={`notification${fading ? " fade-out" : ""}`}>
 			<p>{message}</p>
-			<button onClick={onExpire}>
-				<img className="icon" src={deleteIcon}/>
+			<button className="notification-close" onClick={onExpire}>
+				<img className="small-icon" src={cancelIcon} alt="close"/>
 			</button>
 		</div>
 	);
