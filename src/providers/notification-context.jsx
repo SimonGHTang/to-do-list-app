@@ -4,7 +4,7 @@ import NotificationList from "../components/notification-list.jsx";
 const NotificationContext = createContext();
 
 export function useNotification() {
-    return useContext(NotificationContext);
+	return useContext(NotificationContext);
 }
 
 export function NotificationProvider({ children }) {

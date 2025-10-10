@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useNavigate } from "react-router-dom";
 import { useNotification } from "../providers/notification-context.jsx";
 import UserService from "../services/user-services.jsx";
 
 function ProfileOnboarding() {
 	const { getAccessTokenSilently } = useAuth0();
 	const notify = useNotification();
-	const [user, setUser] = useState({});
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		async function checkDatabaseHasUser() {
@@ -17,7 +18,7 @@ function ProfileOnboarding() {
 					},
 				});
 
-				const response = await UserService.checkLoginExists(accessToken);
+				let response = await UserService.checkLoginExists(accessToken);
 				if (response.status !== 200) {
 					throw new Error(response.message || "Failed to fetch check user.");
 				}
@@ -26,8 +27,7 @@ function ProfileOnboarding() {
 				if (response.status !== 200) {
 					throw new Error(response.message || "Failed to fetch user.");
 				}
-				const user = response.data;
-				setUser(user);
+				navigate('/');
 			} catch (error) {
 				notify(error.message);
 				throw error;
@@ -39,7 +39,7 @@ function ProfileOnboarding() {
 
 	return (
 			<div>
-					<h1>Profile Onboarding Page</h1>
+					<h1>Redirecting....!</h1>
 					<p></p>
 			</div>
 	);

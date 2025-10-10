@@ -17,7 +17,7 @@ async function getTaskList(token) {
 async function getTaskListByUser(token) {
 	const taskService = apiService(token);
 	const response = await taskService.get(`/userTasks`);
-	return response.data;
+	return response;
 }
 
 async function getTaskById(token, id) {

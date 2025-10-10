@@ -13,7 +13,7 @@ import plusIcon from "../assets/plus.png";
 
 function TodoListPage() {
 	const notify = useNotification();
-	const { getAccessTokenSilently, isAuthenticated } = useAuth0();
+	const { getAccessTokenSilently, isAuthenticated, isLoading } = useAuth0();
 	const [taskList, setTaskList] = useState([]);
 	const [newOrder, setNewOrder] = useState(1);
 
@@ -21,7 +21,7 @@ function TodoListPage() {
 		async function updateTaskList() {
 			try {
 				if (!isAuthenticated) {
-					throw new Error("Failed to fetch Task list.");
+					notify("Please log in to view your task list.");
 				}
 
 				const accessToken = await getAccessTokenSilently({
@@ -41,8 +41,10 @@ function TodoListPage() {
 			}
 		}
 
-		updateTaskList();
-	}, []);
+		if (!isLoading) {
+			updateTaskList();
+		}
+	}, [isAuthenticated, isLoading]);
 
 	useEffect(() => {``
 		if (taskList.at(-1))
